@@ -89,9 +89,14 @@ export default {
 
   max-width: 60vw;
   max-height: 60vw;
-  overflow: auto;
   position: fixed;
   
+}
+
+.modal-content img {
+  max-width: 60vw;
+  max-height: 60vw;
+  object-fit: cover;
 }
 
 .close-btn {

@@ -86,6 +86,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/global.scss";
   .modal_open {
     // background-attachment: fixed;
     position: fixed;
@@ -246,6 +247,7 @@ export default {
   .dark-mode {
     background-color: rgba(23, 23, 23);
     color: white;
+    
   }
   .dark-mode h3 {
     
