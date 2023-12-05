@@ -256,6 +256,7 @@ export default {
   .dark-mode button {
     box-shadow: inset 2px -4px 10px rgba(255, 255, 255, 0.2);
     color: #ffffff;
+    background:#3a3a3a ;
 
   }
   .dark-mode .post-cont1{

@@ -40,6 +40,7 @@ export default {
   border: 2px solid #ffffff98;
 }
 
+
 .nav {
   display: flex;
   flex-direction: column;
@@ -56,6 +57,10 @@ export default {
 @media (max-width: 700px){
 .nav {
   right: 0;
+}
+
+.dark_mode .nav {
+  margin: 2px;
 }
 }
 
