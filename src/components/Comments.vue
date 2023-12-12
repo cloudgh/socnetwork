@@ -80,7 +80,7 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   max-height: 80vh; 
   overflow-y: auto;
-  
+  z-index: 3;
   animation: bendText 2s 1;;
 
   

@@ -7,7 +7,7 @@
       </button>
       <button class="nav-item2" @click="goTo('/Users')">
         <span class="nav-icon">&#128101;</span>
-        User
+        Users
       </button>
     </nav>
   </div>
@@ -34,6 +34,11 @@ export default {
 * {
   box-sizing: border-box;
 }
+.cmp{
+  position: absolute;
+  z-index: 2;
+  
+}
 .dark_mode .nav {
   background-color: rgba(23, 23, 23);
   color: white;
@@ -54,14 +59,19 @@ export default {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 700px){
-.nav {
-  right: 0;
-}
-
-.dark_mode .nav {
-  margin: 2px;
-}
+@media (max-width: 500px){
+  .nav {
+    top: 15px;
+    right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+  }
+  
+  .nav-item1, .nav-item2{
+    min-height: 30px;
+   
+  }
+  
 }
 
 .dark_mode .nav-item1{
@@ -71,13 +81,14 @@ export default {
   color: #dddddd;
 }
 .nav-item1, .nav-item2 {
-  text-align: left;
+  text-align: center;
   text-decoration: none;
   color: #333;
   margin: 4px ;
   border: none;
   background: none;
   cursor: pointer;
+  
 }
 .nav-item1:hover{
   background-color: rgba(245, 163, 63, 0.667);

@@ -49,7 +49,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.app4{
+  @media (max-width: 500px) {
+    margin-top: 78px;
+    
+  }
+}
 .dark-mode {
   background-color: rgba(23, 23, 23);
   color: white;
@@ -78,6 +84,10 @@ h1 {
   flex: 0 0 calc(20% - 20px); 
   margin: 10px;
   height: 250px;
+  @media (max-width: 500px) {
+    
+    min-width: 60vw;
+  }
 }
 
 .user-card {

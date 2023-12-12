@@ -124,6 +124,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+   .app2 {
+    @media (max-width: 500px) {
+      padding-top: 100px;
+    }
+   }
    .dark-mode {
     background-color: rgba(23, 23, 23);
     color: white;
@@ -204,6 +209,12 @@ export default {
   }
   .albums{
     padding: 0 40%;
+    @media (max-width: 500px) {
+     padding: 0 5%;
+     text-align: center;
+     li{list-style: none;}
+     
+    }
   }
   .post ul{
     display: flex;
@@ -242,7 +253,7 @@ export default {
     box-shadow: 4px 4px 10px #1a1a1ab8, -4px -4px 10px #2f2f2fb8;
     animation: slideIn 1.5s ease-in-out;
     @media (max-width: 500px) {
-      left: -10%;
+      // left: -10%;
       width: 250px;
       height: 335px;
     }
@@ -287,7 +298,7 @@ export default {
   .infoid{
     width: 3rem;
     position: relative;
-    left: 80%;
+    // left: 80%;
     bottom: 0;
     color: transparent;
   }
@@ -415,6 +426,9 @@ h3 {
   flex-direction: column;
   margin-top: 10rem;
   align-items: center;
+  @media (max-width: 500px) {
+    margin-top: 8rem;
+  }
 }
 
 </style> 

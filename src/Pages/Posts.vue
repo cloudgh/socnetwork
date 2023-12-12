@@ -1,5 +1,20 @@
 <template>
   <div class="app1" :class="{ 'dark-mode': isDarkMode , 'modal_open': isModalOpen }" >
+   
+    <div v-if="isLoading" class="loading-overlay">
+      <div v-if="errorLoadingData" class="error-message">
+        <p>Ошибка загрузки данных. Пожалуйста, проверьте соединение и попробуйте снова.</p>
+      </div>
+      <div class="spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <h2>Loading...</h2>
+    </div>
     <lamp></lamp>
     <Menu></Menu>
     <div class="book">
@@ -46,15 +61,27 @@ export default {
       posts: [],
       isModalOpen: false,
       currentPostId: null,
+      isLoading: true, 
+      errorLoadingData: false,
     };
   },
   
   mounted() {
-   
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then(response => response.json())
-      .then(data => (this.posts = data));
-      
+    try {
+      fetch('https://jsonplaceholder.typicode.com/posts')
+        .then(response => response.json())
+        .then(data => {
+          this.posts = data;
+          this.isLoading = false;
+        })
+        .catch(error => {
+          console.error('Ошибка загрузки данных:', error);
+          this.errorLoadingData = true;
+        });
+    } catch (error) {
+      console.error('Ошибка при выполнении запроса:', error);
+      this.errorLoadingData = true;
+    }
   },
   methods: {
     openModal(postId) {
@@ -86,6 +113,103 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.error-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #faccff;
+  border: 1px solid #ae00ff;
+  border-radius: 5px;
+  text-align: center;
+  z-index: 2;
+  p{
+    text-align: center;
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255);
+  z-index: 1;
+  @media (max-width: 500px) {
+    width: 100vw;
+  }
+  h2{
+    margin-top: 30px;
+  }
+}
+.dark-mode .loading-overlay{
+  background-color: rgba(23, 23, 23);
+  left: 47%;
+  transform: translateX(-47%);
+}
+.spinner {
+ width: 88px;
+ height: 88px;
+ animation: spinner-y0fdc1 2s infinite ease;
+ transform-style: preserve-3d;
+}
+
+.spinner > div {
+ background-color: rgba(0,77,255,0.2);
+ height: 100%;
+ position: absolute;
+ width: 100%;
+ border: 2px solid #004dff;
+}
+
+.spinner div:nth-of-type(1) {
+ transform: translateZ(-44px) rotateY(180deg);
+}
+
+.spinner div:nth-of-type(2) {
+ transform: rotateY(-270deg) translateX(50%);
+ transform-origin: top right;
+}
+
+.spinner div:nth-of-type(3) {
+ transform: rotateY(270deg) translateX(-50%);
+ transform-origin: center left;
+}
+
+.spinner div:nth-of-type(4) {
+ transform: rotateX(90deg) translateY(-50%);
+ transform-origin: top center;
+}
+
+.spinner div:nth-of-type(5) {
+ transform: rotateX(-90deg) translateY(50%);
+ transform-origin: bottom center;
+}
+
+.spinner div:nth-of-type(6) {
+ transform: translateZ(44px);
+}
+
+@keyframes spinner-y0fdc1 {
+ 0% {
+  transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
+ }
+
+ 50% {
+  transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
+ }
+
+ 100% {
+  transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
+ }
+}
 @import "@/styles/global.scss";
   .modal_open {
     // background-attachment: fixed;
@@ -97,7 +221,7 @@ export default {
     display: flex;
     flex-direction: column;
     min-height: fit-content;
-    min-width: 98vw;;
+    min-width: 95vw;;
    
 
   }
@@ -116,12 +240,15 @@ export default {
     
     
     @media ( max-width: 788px) {
-      grid-template-columns: 55vw 10px;
+      grid-template-columns: 55vw;
+      border: 20px solid rgba(77, 58, 23);
+      border-right: 10px solid #000000ae;
+      border-top-right-radius: 50% 37px;
+      border-bottom-right-radius: 50% 47px;
       animation: bendText 2s 1;
-     
+      
       .post-cont1::before {
-        width: 56.2vw;
-        height: 197.5%;
+        border: 0;
       }
       .post-cont2 h1{
         display: none;
@@ -134,8 +261,12 @@ export default {
         border-bottom-left-radius: 90% 25px;
          border-bottom-right-radius: 90% 40px;
       }
+      .post-cont2::before {
+        border: 0;
+      }
       .sq{
-        height: 197.25%;
+        height: 0;
+        appearance: none;
       }
       
     }
@@ -146,7 +277,7 @@ export default {
     transform: rotate(-2deg);
   }
   100% {
-    transform:  scalex(-1);
+    transform:  scalex(1);
   }
 }
   .sq{
@@ -247,7 +378,7 @@ export default {
   .dark-mode {
     background-color: rgba(23, 23, 23);
     color: white;
-    
+    min-height: 100vh;
   }
   .dark-mode h3 {
     
@@ -262,10 +393,16 @@ export default {
   .dark-mode .post-cont1{
     background-color: #57575733;
     box-shadow: -12px 4px 10px  #ffffff57;
+    @media ( max-width: 788px) {
+      background-color: #232323;
+    }
   }
   
   .dark-mode .post-cont2{
     background-color: #57575733;
+    @media ( max-width: 788px) {
+      background-color: #232323;
+    }
   }
   .dark-mode .post-cont .post {
     border: 2px solid rgba(255, 255, 255, 0.395);

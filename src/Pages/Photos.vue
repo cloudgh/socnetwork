@@ -1,14 +1,17 @@
-
 <template>
   <div class="app3" :class="{ 'dark-mode': isDarkMode }">
     <lamp></lamp>
     <Menu></Menu>
     <h1>Photos</h1>
     <div class="photo-gallery">
-      <div v-for="photo in photos" :key="photo.id" class="photo-item" @click="bigPhoto(photo.id, albumId)">
-        <img :src="photo.thumbnailUrl" :alt="photo.title" />
+      <div v-if="loadingError" class="error-message">
+      Произошла ошибка при загрузке данных. Пожалуйста, проверьте ваше соединение и попробуйте позже.
       </div>
+    <div v-for="(photo, index) in photos" :key="index" class="photo-item" @click="photo.isLoaded && bigPhoto(photo.id, albumId)">
+      <img v-show="photo.isLoaded" :src="photo.thumbnailUrl" :alt="photo.title" />
+      <div v-show="!photo.isLoaded" class="photo-placeholder"></div>
     </div>
+  </div>
 
     <div v-if="isModalOpen" class="modal-overlay">
       <div class="modal-content">
@@ -31,14 +34,34 @@ export default {
       albumId: null,
       isModalOpen: false,
       modalImageUrl: "",
+      loadingError: false,
     };
   },
   mounted() {
-    this.albumId = this.$route.params.albumId;
-    fetch(`https://jsonplaceholder.typicode.com/albums/${this.albumId}/photos`)
-      .then(response => response.json())
-      .then(data => (this.photos = data));
-  },
+  this.albumId = this.$route.params.albumId;
+
+  this.photos = Array(10).fill({}).map(() => ({ isLoaded: false }));
+
+  fetch(`https://jsonplaceholder.typicode.com/albums/${this.albumId}/photos`)
+  .then(response => response.json())
+    .then(data => {
+      data.forEach((photo, index) => {
+        const img = new Image();
+        img.onload = () => {
+          this.photos[index] = { ...photo, isLoaded: true };
+          this.photos = [...this.photos];
+        };
+        img.src = photo.thumbnailUrl;
+      });
+      
+      if (data.length < this.photos.length) {
+        this.photos.length = data.length;
+      }
+    })
+    .catch(() => {
+      this.loadingError = true; 
+    });;
+},
   computed: {
     isDarkMode() {
       return this.$store.state.isDarkMode;
@@ -52,6 +75,7 @@ export default {
         this.isModalOpen = true;
       }
     },
+    
     closeModal() {
       this.isModalOpen = false;
       this.modalImageUrl = "";
@@ -61,8 +85,33 @@ export default {
 </script>
 
 <style scoped>
+.error-message {
+  padding: 10px;
+  background-color: #faccff;
+  border: 1px solid #ae00ff;
+  margin: 10px 0;
+  color: #333;
+  text-align: center;
+}
+.photo-placeholder {
+  width: 100%;
+  height: 150px;
+  background-color: #ccc; 
+  border-radius: 20px;
+  animation: loadingAnimation 2s infinite alternate;
+}
 
-
+@keyframes loadingAnimation {
+  0% {
+    background-color: #ccc;
+  }
+  50% {
+    background-color: #dfdfdf;
+  }
+  100% {
+    background-color: #ccc;
+  }
+}
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -74,7 +123,7 @@ export default {
   align-items: center;
   justify-content: center;
   animation: bendText 2s 1;;
-
+  z-index: 3;
   
 }
 @keyframes bendText{
@@ -120,6 +169,12 @@ h1{
   gap: 0.5rem;
   justify-content: space-between;
   max-width: 65vw; 
+ 
+}
+.app3{
+  @media (max-width: 500px) {
+    margin-top: 78px;
+  }
 }
 
 .photo-item {
