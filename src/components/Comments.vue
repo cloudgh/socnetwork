@@ -76,7 +76,8 @@ export default {
   transform: translate(-50%, -50%);
   padding: 20px;
   background-color: white;
-  
+  width: 90vw;
+  margin-top: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   max-height: 80vh; 
   overflow-y: auto;
@@ -95,6 +96,7 @@ export default {
 }
 .modal-content {
   margin: 0 auto;
+  // max-width: 90vw;
   max-height: 88vh;
   overflow-y: auto;
 }

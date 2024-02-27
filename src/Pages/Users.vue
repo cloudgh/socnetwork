@@ -52,7 +52,7 @@ export default {
 <style lang="scss" scoped>
 .app4{
   @media (max-width: 500px) {
-    margin-top: 78px;
+    padding-top: 78px;
     
   }
 }

@@ -173,7 +173,7 @@ h1{
 }
 .app3{
   @media (max-width: 500px) {
-    margin-top: 78px;
+    padding-top: 78px;
   }
 }
 

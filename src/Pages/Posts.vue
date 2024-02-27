@@ -221,8 +221,8 @@ export default {
     display: flex;
     flex-direction: column;
     min-height: fit-content;
-    min-width: 95vw;;
-   
+    min-width: 100vw;
+    box-sizing: border-box;
 
   }
 
