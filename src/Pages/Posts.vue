@@ -212,16 +212,19 @@ export default {
 }
 @import "@/styles/global.scss";
   .modal_open {
+    display: flex;
     // background-attachment: fixed;
     position: fixed;
     // min-width: 98vw;
+    // min-width: 100vw;
+    // box-sizing: border-box;
   }
 
   .app1{
     display: flex;
     flex-direction: column;
     min-height: fit-content;
-    max-width: 100vw;
+    width: 100%;
     box-sizing: border-box;
 
   }
